@@ -1,69 +1,83 @@
+const optionBtn = document.querySelectorAll('section.optionBtn button');
+const playerPoints = document.querySelector('#playerScore');
+const computerPoints = document.querySelector("#computerScore"); 
+const roundResult = document.querySelector("#roundResult"); 
+const resetPlay = document.querySelector("#reset")
+
+
+
 let humanScore = 0;
 let computerScore = 0;
 
+resetPlay.addEventListener('click',() => location.reload())
+optionBtn.forEach(button => button.addEventListener('click', getHumanChoice));
+
 function getComputerChoice() {
-    let options = ["rock", "paper", "scissors"];
+    const options = ["rock", "paper", "scissors"];
     return options[Math.floor(Math.random() * 3)];
 }
 
-function getHumanChoice() {
-    let option = prompt("Rock, Paper or Scissors?");
-    
-    if (!option) return getHumanChoice(); // Si el usuario presiona "Cancelar", volver a preguntar
-
-    option = option.toLowerCase();
-
-    if (!["rock", "paper", "scissors"].includes(option)) {
-        alert("El valor no es permitido. Debe ser Rock, Paper o Scissors.");
-        return getHumanChoice();
-    }
-
-    return option;
+function getHumanChoice(event) {
+    const humanSelection = event.target.id;
+    const computerSelection = getComputerChoice();
+    playRound(humanSelection, computerSelection); 
 }
 
 function playRound(humanChoice, computerChoice) {
-    console.log(`Tú elegiste: ${humanChoice}`);
-    console.log(`La computadora eligió: ${computerChoice}`);
-
     if (humanChoice === computerChoice) {
-        console.log("Empate");
+        roundResult.textContent = "The game is a Tie!";
     } else if (
         (humanChoice === "rock" && computerChoice === "scissors") ||
         (humanChoice === "paper" && computerChoice === "rock") ||
         (humanChoice === "scissors" && computerChoice === "paper")
     ) {
-        console.log(`Ganaste! ${humanChoice} vence a ${computerChoice}`);
-        humanScore++;
+        humanScore++; 
+        playerPoints.textContent = humanScore; 
+        roundResult.textContent = "You Win the game!!!!";
     } else {
-        console.log(`Perdiste! ${computerChoice} vence a ${humanChoice}`);
-        computerScore++;
+        computerScore++; 
+        computerPoints.textContent = computerScore; 
+        roundResult.textContent = "You Lost the game to a computer!";
     }
 
     console.log(`Marcador: Humano ${humanScore} - Computadora ${computerScore}`);
+    checkWinner()
 }
 
-function playGame() {
-    // Reiniciar puntajes al inicio del juego
-    humanScore = 0;
-    computerScore = 0;
 
-    // Jugar 5 rondas
-    for (let round = 1; round <= 5; round++) {
-        console.log(`\n--- Ronda ${round} ---`);
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
+function disableButtons() {
+    optionBtn.forEach(button => button.removeEventListener('click', getHumanChoice));
+}
+
+// Verificar si alguien ha llegado a 5 puntos
+function checkWinner() {
+    if (humanScore === 5 || computerScore === 5) {
+        if (humanScore === computerScore) {
+            updateWinner('tie');
+        } else {
+            let winner = (humanScore > computerScore) ? 'player' : 'computer';
+            updateWinner(winner);
+        }
+        disableButtons();  
     }
+}
 
-    // Declarar el ganador al final del juego
-    if (humanScore > computerScore) {
-        console.log("\n¡Felicidades! Ganaste el juego.");
-    } else if (humanScore < computerScore) {
-        console.log("\nLa computadora ganó el juego. Mejor suerte la próxima vez.");
+// Muestra el ganador final
+function updateWinner(winner) {
+    if (winner === 'tie') {
+        roundResult.textContent = "It's a tie game!";
+    } else if (winner === 'player') {
+        roundResult.textContent = "🎉 Congratulations! You won the game!";
     } else {
-        console.log("\nEs un empate en el juego.");
+        roundResult.textContent = "💻 The computer won the game. Better luck next time!";
     }
 }
 
-// Llamar a la función para jugar el juego completo
-playGame();
+
+
+
+
+
+
+
+
