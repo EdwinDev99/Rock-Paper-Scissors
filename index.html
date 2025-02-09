@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
 </head>
 <body>
 
-    <div>
+    <div  class="container"> 
         
-        <section>
+        <section class="head">
             <h1>Rock Paper Scissors</h1>
             <h2>Choose your weapon</h2>
         </section>
@@ -19,21 +20,21 @@
             <button id="paper">Paper</button>
             <button id="scissors">Scissors</button>
         </section>
-        <section>
+        <section class="scores">
             <div>
                 <h4>Player score</h4>
-                <div id="playerScore">0</div>
+                <div class="scoreInput" id="playerScore"></div>
             </div>
             <div>
                 <h4>Computer score</h4>
-                <div id="computerScore">0</div>
+                <div  class="scoreInput" id="computerScore"></div>
             </div>
             
         </section>
-        <div>
+        <div class="results"> 
             <h4>Results</h4>
-            <div id="roundResult"></div>
-            <button id="reset">Play again!</button>
+            <div class="resultField" id="roundResult"></div>
+            <button class="buttonReset" id="reset">Play again!</button>
         </div>
 
     </div>
